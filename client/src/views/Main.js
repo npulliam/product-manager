@@ -22,11 +22,15 @@ function Main() {
     setProducts([...products, newProduct])
   }
 
+  const handleDelete = (filteredProducts) => {
+    setProducts(filteredProducts)
+  }
+
   return (
     
     <div className="container">
       <NewProduct onNewProduct={addProduct}/>
-      <Products products={products}/>
+      <Products products={products} onDelete={handleDelete}/>
     </div>
   );
 }

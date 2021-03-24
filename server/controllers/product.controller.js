@@ -21,13 +21,17 @@ module.exports.delete = (request, response) => {
 }
 
 module.exports.update = (request, response) => {
-    Product.findByIdAndUpdate(request.params.id)
+    console.log("update method executed with params:", request.params)
+    Product.findByIdAndUpdate(request.params.id, request.body, {
+        runValidators: true,
+        new: true
+    })
         .then((product) => {
-            response.json(product)
+            response.json(product);
         })
         .catch((err) => {
-            response.json(err)
-        })
+            response.json(err);
+        });
 }
 
 module.exports.getOne = (request, response) => {
