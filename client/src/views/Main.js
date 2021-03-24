@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import NewProduct from '../components/NewProduct';
+import ProductForm from '../components/ProductForm';
 import axios from 'axios';
 import Products from '../components/Products';
 
 
 
 function Main() {
-  const [ products, setProducts ] = useState([]);
-  const [ loaded, setLoaded ] = useState(false);
-  const [ updated, setUpdated ] = useState(false);
+  const [ products, setProducts ] = useState(null);
   
   useEffect(()=> {
     axios.get("http://localhost:8000/api/products")
         .then(res=>{
-            setProducts(res.data);
-            setLoaded(true);
-        });
+          setProducts(res.data);
+        })
+        .catch((err)=> {
+          console.log(err);
+        })
   },[]);
 
   const addProduct = (newProduct) => {
-    setProducts([...products, newProduct])
+    axios.post("http://localhost:8000/api/products/new", newProduct)
+      .then((response) => setProducts([...products, response.data]))
+      .catch((err) => console.log(err))
   }
 
   const handleDelete = (filteredProducts) => {
@@ -28,9 +30,10 @@ function Main() {
 
   return (
     
-    <div className="container">
-      <NewProduct onNewProduct={addProduct}/>
-      <Products products={products} onDelete={handleDelete}/>
+    <div className="container text-center">
+      <h3>Add New Product</h3>
+      <ProductForm onSubmitProp={addProduct} initialTitle="" initialPrice="" initialDescription=""/>
+      {products && <Products products={products} onDelete={handleDelete}/>}
     </div>
   );
 }
