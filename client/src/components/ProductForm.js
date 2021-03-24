@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-import { navigate } from '@reach/router';
-import { PromiseProvider } from 'mongoose';
+import React, { useState } from 'react'
+
 export default (props) => {
     const { initialTitle, initialPrice, initialDescription, onSubmitProp } = props
     const [ title, setTitle ] = useState(initialTitle);
@@ -11,10 +9,6 @@ export default (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmitProp({title, price, description})
-        // const newProduct = {title, price, description}
-        // axios.post("http://localhost:8000/api/products/new", newProduct)
-        //     .then((response) => props.onNewProduct(newProduct))
-        //     .catch((err) => console.log(err))
 
     }
     return (

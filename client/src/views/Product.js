@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {navigate, Link} from '@reach/router';
+import DeleteButton from '../components/DeleteButton';
 
 function Product(props) {
     const [product, setProduct] = useState(null);
@@ -16,32 +17,26 @@ function Product(props) {
             });
       },[props.productId]);
 
-      const deleteProduct = (delId) => {
-        axios.delete(`http://localhost:8000/api/products/delete/${delId}`)
-            .then((response) => {
-                console.log("deleted res:", response)
-                navigate("/");
-            })
-            .catch((err) => console.log(err))
-            }
+    const handleDelete = (e) => {
+        navigate("/");
+    }
         
 
-      if (product === null) {
+    if (product === null) {
           return "Loading Product from database"
-      }
+    }
 
-      return (
-          <div className="container text-center">
-              <h3>{product.title}</h3>
-              <p>Price: {product.price}</p>
-              <p>Description: {product.description}</p>
-              <div className="row d-flex justify-content-center">
-
-                <button className="btn-sm w-25 btn-danger" onClick={(e) => deleteProduct(product._id)}>Delete</button>
-                <Link to={`/${product._id}/edit`} className="btn btn-sm w-25 mx-2 btn-dark">Edit</Link>
-              </div>
-          </div>
-      )
+    return (
+        <div className="container text-center">
+            <h3>{product.title}</h3>
+            <p>Price: {product.price}</p>
+            <p>Description: {product.description}</p>
+            <div className="d-flex justify-content-center">
+                <DeleteButton productId={product._id} successCallback={handleDelete}/>
+                <Link to={`/${product._id}/edit`} className="btn-sm mx-2 btn-link btn-dark">Edit</Link>
+            </div>
+        </div>
+    )
 }
 
 export default Product;
